@@ -1,0 +1,23 @@
+@tailwind base;
+
+@layer base {
+  body {
+    @apply text-gray-900;
+  }
+  h1 {
+    @apply text-2xl;
+  }
+  h2 {
+    @apply text-xl;
+  }
+  h3 {
+    @apply text-lg;
+  }
+  a {
+    @apply text-gray-900 no-underline;
+  }
+}
+
+@tailwind components;
+
+@tailwind utilities;
