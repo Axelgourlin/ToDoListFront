@@ -3,28 +3,40 @@
     class="container min-w-full bg-gray-100 h-screen text-center mx-auto flex flex-col items-center"
   >
     <h1 class="text-2xl p-8">My Todo</h1>
-    <div class="py-2 flex gap-4 w-4/5">
-      <Button title="New Todo" />
-      <Filter />
+    <div class="py-2 flex justify-between w-4/5">
+      <Input @submitTodo="submitTodo" />
+      <Filter @handleFilter="handleFilter" />
     </div>
-    <TitleBar />
-    <ListItems />
+    <TitleBar class="py-1 mt-2" />
+    <br />
+    <TodoList />
+    <TodoInfo />
   </div>
 </template>
 
 <script>
-import Button from "./components/Button";
+import Input from "./components/Input";
 import TitleBar from "./components/TitleBar";
 import Filter from "./components/Filter";
-import ListItems from "./components/ListItems";
+import TodoList from "./components/TodoList";
+import TodoInfo from "./components/TodoInfo";
 
 export default {
   name: "App",
   components: {
-    Button,
+    Input,
     TitleBar,
     Filter,
-    ListItems,
+    TodoList,
+    TodoInfo,
+  },
+  methods: {
+    handleFilter(value) {
+      console.log(value);
+    },
+    submitTodo(text) {
+      this.$store.dispatch("addTodo", text);
+    },
   },
 };
 </script>
