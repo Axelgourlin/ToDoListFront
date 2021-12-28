@@ -58,7 +58,10 @@ export default {
       this.edit = !this.edit;
     },
     handleChangeSelect(value) {
-      this.$store.dispatch("updateTodoStatus", { ...this.todo, status: value });
+      this.$store.dispatch("updateTodoStatus", {
+        ...this.todo,
+        status: value,
+      });
     },
     handleFocusOut(e) {
       this.edit = !this.edit;
@@ -69,7 +72,6 @@ export default {
     },
     handleDelete() {
       this.$store.dispatch("deleteTodo", this.todo);
-      this.$emit("refreshTodo");
     },
   },
 };

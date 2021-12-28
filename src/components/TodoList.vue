@@ -1,6 +1,6 @@
 <template>
-  <div class="w-4/5" v-for="todo in todos" :key="todo.id">
-    <Todo :todo="todo" @refreshTodo="refreshTodo" />
+  <div class="w-4/5" v-for="todo in todosFilter(filterData)" :key="todo.id">
+    <Todo :todo="todo" />
   </div>
 </template>
 
@@ -13,16 +13,19 @@ export default {
   components: {
     Todo,
   },
-
-  computed: {
-    ...mapState(["todos"]),
+  data() {
+    return {
+      filterData: this.filter,
+      todosData: this.todos,
+    };
   },
-  methods: {
-    onChange(e) {
-      this.$emit("handleStatus", e.target.value);
-    },
-    refreshTodo() {
-      this.$forceUpdate();
+  computed: {
+    ...mapState(["todos", "filter"]),
+    todosFilter(filter) {
+      if (this.filter === "") {
+        return this.todos;
+      }
+      return this.todosData.filter((todo) => todo.status === filter);
     },
   },
 };

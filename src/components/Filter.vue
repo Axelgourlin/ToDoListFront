@@ -35,7 +35,7 @@ export default {
   },
   methods: {
     onChange(e) {
-      this.$emit("handleFilter", e.target.value);
+      this.$store.dispatch("updateFilter", e.target.value);
     },
   },
 };

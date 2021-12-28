@@ -1,4 +1,5 @@
 import { createStore } from "vuex";
+import { fetchData } from "@/utils/fetch";
 
 export default createStore({
   state: {
@@ -22,24 +23,29 @@ export default createStore({
         status: "done",
       },
     ],
+    filter: "",
+    loading: false,
   },
   getters: {
     // eslint-disable-next-line
-    totalTodos: state => state.todos.length,
+    totalTodos: (state) => state.todos.length,
     totalTodosTodo(state) {
       // eslint-disable-next-line
-      return state.todos.filter(todo => todo.status === "todo").length;
+      return state.todos.filter((todo) => todo.status === "todo").length;
     },
     totalTodosInProgress(state) {
       // eslint-disable-next-line
-      return state.todos.filter(todo => todo.status === "inProgress").length;
+      return state.todos.filter((todo) => todo.status === "inProgress").length;
     },
     totalTodosDone(state) {
       // eslint-disable-next-line
-      return state.todos.filter(todo => todo.status === "done").length;
+      return state.todos.filter((todo) => todo.status === "done").length;
     },
   },
   mutations: {
+    SET_LOADING(state, loading) {
+      state.loading = loading;
+    },
     ADD_TODO(state, text) {
       const date = new Date().toLocaleString("fr-FR").split(",")[0];
       const newTodo = {
@@ -50,6 +56,9 @@ export default createStore({
       };
       state.todos.push(newTodo);
     },
+    GET_TODOS(state, todos) {
+      state.todos = todos;
+    },
     UPDATE_STATUS(state, todo) {
       state.todos[todo.id - 1].status = todo.status;
     },
@@ -57,13 +66,17 @@ export default createStore({
       state.todos[todo.id - 1].text = todo.text;
     },
     DELETED_TODO(state, todo) {
-      // eslint-disable-next-line
-      const todoId = state.todos.findIndex(t => t.id === todo.id);
-      console.log(todoId);
-      state.todos[todoId] = state.todos.slice(todoId, 1);
+      fetchData("DELETE");
+      state.todos = state.todos.filter((t) => t !== todo);
+    },
+    UPDATE_FILTER(state, value) {
+      state.filter = value;
     },
   },
   actions: {
+    getTodos({ commit }) {
+      commit;
+    },
     addTodo({ commit }, payload) {
       commit("ADD_TODO", payload);
     },
@@ -75,6 +88,9 @@ export default createStore({
     },
     deleteTodo({ commit }, payload) {
       commit("DELETED_TODO", payload);
+    },
+    updateFilter({ commit }, payload) {
+      commit("UPDATE_FILTER", payload);
     },
   },
 });
