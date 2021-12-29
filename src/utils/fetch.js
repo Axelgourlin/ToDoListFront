@@ -1,5 +1,4 @@
-export const fetchData = async (method, bodyData = "default") => {
-  const location = window.location.hostname;
+export const fetchData = async (url, method, bodyData = "default") => {
   const settings = {
     method: method,
     headers: {
@@ -11,7 +10,7 @@ export const fetchData = async (method, bodyData = "default") => {
     settings.body = bodyData;
   }
   try {
-    const fetchResponse = await fetch(`http://${location}:5000/api/`, settings);
+    const fetchResponse = await fetch(url, settings);
     const data = await fetchResponse.json();
     return data;
   } catch (e) {

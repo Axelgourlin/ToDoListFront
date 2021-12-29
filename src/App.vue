@@ -7,8 +7,7 @@
       <Input @submitTodo="submitTodo" />
       <Filter />
     </div>
-    <TitleBar class="py-1 mt-2" />
-    <br />
+    <TitleBar />
     <TodoList />
     <TodoInfo />
   </div>

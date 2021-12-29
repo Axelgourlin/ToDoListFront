@@ -1,50 +1,26 @@
 import { createStore } from "vuex";
 import { fetchData } from "@/utils/fetch";
 
+const url = "http://localhost:3000/todos";
+
 export default createStore({
   state: {
-    todos: [
-      {
-        id: 1,
-        text: "My First todo",
-        createdAt: "27/12/2021",
-        status: "todo",
-      },
-      {
-        id: 2,
-        text: "My second todo",
-        createdAt: "27/12/2021",
-        status: "inProgress",
-      },
-      {
-        id: 3,
-        text: "My third tidi",
-        createdAt: "27/12/2021",
-        status: "done",
-      },
-    ],
-    filter: "",
+    todos: [],
+    filter: "all",
     loading: false,
   },
   getters: {
-    // eslint-disable-next-line
-    totalTodos: (state) => state.todos.length,
-    totalTodosTodo(state) {
-      // eslint-disable-next-line
-      return state.todos.filter((todo) => todo.status === "todo").length;
-    },
-    totalTodosInProgress(state) {
-      // eslint-disable-next-line
-      return state.todos.filter((todo) => todo.status === "inProgress").length;
-    },
-    totalTodosDone(state) {
-      // eslint-disable-next-line
-      return state.todos.filter((todo) => todo.status === "done").length;
+    todos(state) {
+      return state.todos;
     },
   },
   mutations: {
     SET_LOADING(state, loading) {
       state.loading = loading;
+    },
+    GET_TODOS(state, todosData) {
+      state.todos = todosData;
+      console.log("todosData 2:", state.todos);
     },
     ADD_TODO(state, text) {
       const date = new Date().toLocaleString("fr-FR").split(",")[0];
@@ -54,28 +30,31 @@ export default createStore({
         createdAt: date,
         status: "todo",
       };
-      state.todos.push(newTodo);
+      fetchData(url, "POST", newTodo);
     },
-    GET_TODOS(state, todos) {
-      state.todos = todos;
+    UPDATE_TODO(todo) {
+      fetchData(url, "PUT", todo);
     },
-    UPDATE_STATUS(state, todo) {
-      state.todos[todo.id - 1].status = todo.status;
+    DELETED_TODO(todo) {
+      const id = todo.id;
+      fetchData(url, "DELETE", id);
     },
-    UPDATE_TEXT(state, todo) {
-      state.todos[todo.id - 1].text = todo.text;
-    },
-    DELETED_TODO(state, todo) {
-      fetchData("DELETE");
-      state.todos = state.todos.filter((t) => t !== todo);
+    DELETE_ALL_DONE() {
+      fetchData(url + "/deleteAll", "DELETE");
     },
     UPDATE_FILTER(state, value) {
       state.filter = value;
     },
   },
   actions: {
-    getTodos({ commit }) {
-      commit;
+    async getTodos({ commit }) {
+      commit("SET_LOADING", true);
+      return await fetchData("http://localhost:3000/todos", "GET").then(
+        (todos) => {
+          commit("GET_TODOS", todos);
+          commit("SET_LOADING", false);
+        }
+      );
     },
     addTodo({ commit }, payload) {
       commit("ADD_TODO", payload);
@@ -88,6 +67,9 @@ export default createStore({
     },
     deleteTodo({ commit }, payload) {
       commit("DELETED_TODO", payload);
+    },
+    deleteAllDone({ commit }, payload) {
+      commit("DELETE_ALL_DONE", payload);
     },
     updateFilter({ commit }, payload) {
       commit("UPDATE_FILTER", payload);

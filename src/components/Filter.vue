@@ -6,9 +6,9 @@
       @change="onChange"
       class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-normal focus:outline-none focus:shadow-outline"
     >
-      <option value="Filter">Filter</option>
+      <option value="all">Filter</option>
       <option value="todo">Todo</option>
-      <option value="inProgess">In Progress</option>
+      <option value="inProgress">In Progress</option>
       <option value="done">Done</option>
     </select>
     <div
