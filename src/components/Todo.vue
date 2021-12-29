@@ -1,8 +1,8 @@
 <template>
   <div class="flex relative">
     <div
-      class="w-full flex items-center bg-gray-200 mb-2 rounded-sm"
-      :class="handleStatus()"
+      class="w-full flex items-center bg-gray-200 rounded-sm"
+      :class="handleStatus"
     >
       <h3 v-if="!edit" @click="handleChangeText" class="w-2/4 pl-4 text-left">
         {{ todo.text }}
@@ -46,19 +46,25 @@ export default {
       edit: false,
     };
   },
-  methods: {
+  computed: {
     handleStatus() {
       if (this.todo.status === "done") {
         return "bg-green-200 line-through";
       } else if (this.todo.status === "inProgress") {
         return "bg-sky-200";
       }
+      return "";
     },
+  },
+  methods: {
     handleChangeText() {
       this.edit = !this.edit;
     },
     handleChangeSelect(value) {
-      this.$store.dispatch("updateTodoStatus", { ...this.todo, status: value });
+      this.$store.dispatch("updateTodoStatus", {
+        ...this.todo,
+        status: value,
+      });
     },
     handleFocusOut(e) {
       this.edit = !this.edit;
@@ -69,7 +75,6 @@ export default {
     },
     handleDelete() {
       this.$store.dispatch("deleteTodo", this.todo);
-      this.$emit("refreshTodo");
     },
   },
 };

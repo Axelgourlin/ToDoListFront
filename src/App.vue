@@ -5,10 +5,9 @@
     <h1 class="text-2xl p-8">My Todo</h1>
     <div class="py-2 flex justify-between w-4/5">
       <Input @submitTodo="submitTodo" />
-      <Filter @handleFilter="handleFilter" />
+      <Filter />
     </div>
-    <TitleBar class="py-1 mt-2" />
-    <br />
+    <TitleBar />
     <TodoList />
     <TodoInfo />
   </div>
@@ -31,9 +30,6 @@ export default {
     TodoInfo,
   },
   methods: {
-    handleFilter(value) {
-      console.log(value);
-    },
     submitTodo(text) {
       this.$store.dispatch("addTodo", text);
     },

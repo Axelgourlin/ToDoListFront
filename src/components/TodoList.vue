@@ -1,28 +1,39 @@
 <template>
-  <div class="w-4/5" v-for="todo in todos" :key="todo.id">
-    <Todo :todo="todo" @refreshTodo="refreshTodo" />
+  <div class="w-4/5 flex flex-col gap-2">
+    <div v-if="loading"><span>Loading...</span></div>
+    <div v-else v-for="todo in todosFilter" :key="todo.id">
+      <Todo :todo="todo" />
+    </div>
   </div>
 </template>
 
 <script>
 import Todo from "./Todo";
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 
 export default {
   name: "ListItems",
   components: {
     Todo,
   },
-
-  computed: {
-    ...mapState(["todos"]),
+  async beforeMount() {
+    await this.$store.dispatch("getTodos");
+    console.log("hello 2", this.todos);
   },
-  methods: {
-    onChange(e) {
-      this.$emit("handleStatus", e.target.value);
-    },
-    refreshTodo() {
-      this.$forceUpdate();
+  computed: {
+    ...mapState(["filter", "loading"]),
+    ...mapGetters(["todos"]),
+    todosFilter() {
+      if (this.filter === "todo") {
+        return this.todos.filter((todo) => todo.status === "todo");
+      }
+      if (this.filter === "inProgress") {
+        return this.todos.filter((todo) => todo.status === "inProgress");
+      }
+      if (this.filter === "done") {
+        return this.todos.filter((todo) => todo.status === "done");
+      }
+      return this.todos;
     },
   },
 };

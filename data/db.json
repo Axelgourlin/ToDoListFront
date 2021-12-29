@@ -1,0 +1,22 @@
+{
+  "todos": [
+    {
+      "id": 1,
+      "text": "My First todo",
+      "createdAt": "27/12/2021",
+      "status": "todo"
+    },
+    {
+      "id": 2,
+      "text": "My second todo",
+      "createdAt": "27/12/2021",
+      "status": "inProgress"
+    },
+    {
+      "id": 3,
+      "text": "My third tidi",
+      "createdAt": "27/12/2021",
+      "status": "done"
+    }
+  ]
+}
