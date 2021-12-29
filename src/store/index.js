@@ -20,12 +20,11 @@ export default createStore({
     },
     GET_TODOS(state, todosData) {
       state.todos = todosData;
-      console.log("todosData 2:", state.todos);
+      // console.log("todosData 2:", state.todos);
     },
     ADD_TODO(state, text) {
       const date = new Date().toLocaleString("fr-FR").split(",")[0];
       const newTodo = {
-        id: state.todos.length + 1,
         text: text,
         createdAt: date,
         status: "todo",
